@@ -262,6 +262,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 };
 static Atom wmatom[WMLast], netatom[NetLast];
 static int running = 1;
+static char *termcmd[]  = { NULL, NULL };
 static Cur *cursor[CurLast];
 static Clr **scheme;
 static Display *dpy;
@@ -1537,6 +1538,11 @@ setup(void)
 	/* clean up any zombies immediately */
 	sigchld(0);
 
+	/* load environment variable(s) */
+	termcmd[0] = getenv(TERMINAL_ENVVAR);
+	if (termcmd[0] == NULL) {
+		die("couldn't load " TERMINAL_ENVVAR " environment variable.");
+	}
 	/* init screen */
 	screen = DefaultScreen(dpy);
 	sw = DisplayWidth(dpy, screen);

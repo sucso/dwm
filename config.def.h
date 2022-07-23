@@ -76,7 +76,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return,         spawn,          {.v = termcmd } },
 	/* layouts */
 	{ MODKEY,                       XK_t,              setlayout,      {.v = &layouts[0]} }, /* tile */
-	{ MODKEY,                       XK_m,              setlayout,      {.v = &layouts[1]} }, /* monocle */
+	{ MODKEY,                       XK_o,              setlayout,      {.v = &layouts[1]} }, /* monocle */
 	{ MODKEY,                       XK_f,              setlayout,      {.v = &layouts[2]} }, /* float */
 	{ MODKEY|ShiftMask,             XK_space,          togglefloating, {0} },
 	/* move focus */

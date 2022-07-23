@@ -44,9 +44,10 @@ static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
+	{ "[]=",      tile },    /* Default: tile (Master on left, slaves on right) */
+	{ "[M]",      monocle }, /* one window in "fullscreen" (fakefullscreen) */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+
 };
 
 /* key definitions */
@@ -66,42 +67,49 @@ static const char *emacscmd[] = { "emacsclient", "-c", "-a", "", NULL };
 #define TERMINAL_ENVVAR "TERMINAL"
 
 static const Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_e,      spawn,          {.v = emacscmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_F5,     xrdb,           {.v = NULL } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	/* modifier                     key                function        argument */
+	/* spawn programs */
+	{ MODKEY,                       XK_b,              togglebar,      {0} },
+	{ MODKEY|ShiftMask,             XK_c,              killclient,     {0} },
+	{ MODKEY,                       XK_d,              spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_e,              spawn,          {.v = emacscmd } },
+	{ MODKEY,                       XK_Return,         spawn,          {.v = termcmd } },
+	/* layouts */
+	{ MODKEY,                       XK_t,              setlayout,      {.v = &layouts[0]} }, /* tile */
+	{ MODKEY,                       XK_m,              setlayout,      {.v = &layouts[1]} }, /* monocle */
+	{ MODKEY,                       XK_f,              setlayout,      {.v = &layouts[2]} }, /* float */
+	{ MODKEY|ShiftMask,             XK_space,          togglefloating, {0} },
+	/* move focus */
+	{ MODKEY,                       XK_j,              focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,              focusstack,     {.i = -1 } },
+	/* handle slave-master dynamics */
+	{ MODKEY,                       XK_h,              setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,              setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_m,              incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_m,              incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_space,          zoom,           {0} }, /* set new master */
+        /* (multi monitor setup) move focus between screens */
+	{ MODKEY,                       XK_comma,          focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period,         focusmon,       {.i = +1 } },
+	/* (multi monitor setup) move active window to different screen */ 
+	{ MODKEY|ShiftMask,             XK_comma,          tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,         tagmon,         {.i = +1 } },
+	/* tags */ 
+	TAGKEYS(                        XK_1,                              0)
+	TAGKEYS(                        XK_2,                              1)
+	TAGKEYS(                        XK_3,                              2)
+	TAGKEYS(                        XK_4,                              3)
+	TAGKEYS(                        XK_5,                              4)
+	TAGKEYS(                        XK_6,                              5)
+	TAGKEYS(                        XK_7,                              6)
+	TAGKEYS(                        XK_8,                              7)
+	TAGKEYS(                        XK_9,                              8)
+	{ MODKEY,                       XK_0,              view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,              tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_p,              view,           {0} }, /* go back to previous tag */
+	/* misc */
+	{ MODKEY|ShiftMask,             XK_q,              quit,           {0} },
+	{ MODKEY,                       XK_F5,             xrdb,           {.v = NULL } }, /* reload xrdb */
 };
 
 /* button definitions */

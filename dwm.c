@@ -174,6 +174,7 @@ static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interac
 static void arrange(Monitor *m);
 static void arrangemon(Monitor *m);
 static void attach(Client *c);
+static void attachbottom(Client *c);
 static void attachstack(Client *c);
 static void buttonpress(XEvent *e);
 static void checkotherwm(void);
@@ -449,6 +450,18 @@ attach(Client *c)
 {
 	c->next = c->mon->clients;
 	c->mon->clients = c;
+}
+
+void
+attachbottom(Client *c)
+{
+	Client *below = c->mon->clients;
+	for (; below && below->next; below = below->next);
+	c->next = NULL;
+	if (below)
+		below->next = c;
+	else
+		c->mon->clients = c;
 }
 
 void
@@ -1152,7 +1165,7 @@ manage(Window w, XWindowAttributes *wa)
 		/* Do not let swallowed client steal focus unless the terminal has focus */
 		focusclient = (term == selmon->sel);
 	} else {
-		attach(c);
+		attachbottom(c);
 
 		if (focusclient || !c->mon->sel || !c->mon->stack)
 			attachstack(c);
@@ -1552,7 +1565,7 @@ sendmon(Client *c, Monitor *m)
 	detachstack(c);
 	c->mon = m;
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
-	attach(c);
+	attachbottom(c);
 	attachstack(c);
 	focus(NULL);
 	arrange(NULL);
@@ -2053,7 +2066,7 @@ updategeom(void)
 				m->clients = c->next;
 				detachstack(c);
 				c->mon = mons;
-				attach(c);
+				attachbottom(c);
 				attachstack(c);
 			}
 			if (m == selmon)

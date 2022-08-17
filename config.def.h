@@ -106,9 +106,22 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_0,              view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,              tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_p,              view,           {0} }, /* go back to previous tag */
+	/* f-keys (mpc) */
+	{ MODKEY,                       XK_F1,             spawn,          {.v = { "mpc", "clear" } } },
+	{ MODKEY,                       XK_F2,             spawn,          {.v = { "mpc", "volume", "-2" } } },
+	{ MODKEY,                       XK_F3,             spawn,          {.v = { "mpc", "volume", "+2" } } },
+	                             /* XK_F4 */
+	{ MODKEY,                       XK_F5,             spawn,          {.v = { "mpc", "prev" } } },
+	{ MODKEY,                       XK_F6,             spawn,          {.v = { "mpc", "toggle" } } },
+	{ MODKEY,                       XK_F7,             spawn,          {.v = { "mpc", "next" } } },
+	{ MODKEY,                       XK_F8,             spawn,          {.v = { "mpc", "single" } } },
+	{ MODKEY,                       XK_F9,             spawn,          {.v = { "mpc", "shuffle" } } },
+	{ MODKEY,                       XK_F10,            spawn,          {.v = { "mpc", "repeat" } } },
+	{ MODKEY,                       XK_F11,            spawn,          {.v = { "mpc", "seek", "-5" } } },
+	{ MODKEY,                       XK_F12,            spawn,          {.v = { "mpc", "seek", "+5" } } },
 	/* misc */
 	{ MODKEY|ShiftMask,             XK_q,              quit,           {0} },
-	{ MODKEY,                       XK_F5,             xrdb,           {.v = NULL } }, /* reload xrdb */
+	{ MODKEY|ShiftMask,             XK_F5,             xrdb,           {.v = NULL } }, /* reload xrdb */
 };
 
 /* button definitions */

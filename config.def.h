@@ -122,6 +122,7 @@ static const Key keys[] = {
 	/* misc */
 	{ MODKEY|ShiftMask,             XK_q,              quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_F5,             xrdb,           {.v = NULL } }, /* reload xrdb */
+	{ 0,                            XK_Print,          spawn,          {.v = { "flameshot", "gui", NULL } } },
 };
 
 /* button definitions */

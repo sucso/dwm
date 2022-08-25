@@ -65,6 +65,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont }; /* no colors 
 static const char *emacscmd[] = { "emacsclient", "-c", "-a", "", NULL };
 #define TERMINAL_ENVVAR "TERMINAL"
 
+#include "movestack.c"
 static const Key keys[] = {
 	/* modifier                     key                function        argument */
 	/* spawn programs */
@@ -84,6 +85,8 @@ static const Key keys[] = {
 	/* handle slave-master dynamics */
 	{ MODKEY,                       XK_h,              setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,              setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_j,              movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,              movestack,      {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_m,              incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_m,              incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_space,          zoom,           {0} }, /* set new master */

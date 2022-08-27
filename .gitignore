@@ -1,1 +1,5 @@
+config.h
+*.o
+dwm
+
 .direnv

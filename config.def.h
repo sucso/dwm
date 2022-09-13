@@ -87,8 +87,8 @@ static const Key keys[] = {
 	{ MODKEY,                  XK_l,             setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,        XK_j,             movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,        XK_k,             movestack,      {.i = -1 } },
-	{ MODKEY|ShiftMask,        XK_m,             incnmaster,     {.i = +1 } },
-	{ MODKEY,                  XK_m,             incnmaster,     {.i = -1 } },
+	{ MODKEY|ShiftMask,        XK_m,             incnmaster,     {.i = -1 } },
+	{ MODKEY,                  XK_m,             incnmaster,     {.i = +1 } },
 	{ MODKEY,                  XK_space,         zoom,           {0} }, /* set new master */
         /* (multi monitor setup) move focus between screens */
 	{ MODKEY,                  XK_comma,         focusmon,       {.i = -1 } },

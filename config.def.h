@@ -7,7 +7,6 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrains Mono:size=10", "Noto Color Emoji:pixelsize=10:antialias=true:autohint=true"};
-static const char dmenufont[]       = "JetBrains Mono:size=10";
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
@@ -61,9 +60,11 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont }; /* no colors b/c i use dmenu-xresources patch */
-static const char *emacscmd[] = { "emacsclient", "-c", "-a", "", NULL };
 #define TERMINAL_ENVVAR "TERMINAL"
+static const char *emacscmd[] = { "emacsclient", "-c", "-a", "", NULL };
+
+// NOTE: this expects a LAUNCHER script to exist
+static const char *launchercmd[] = { "LAUNCHER", NULL };
 
 #include "movestack.c"
 static const Key keys[] = {
@@ -71,7 +72,7 @@ static const Key keys[] = {
 	/* spawn programs */
 	{ MODKEY,                  XK_b,             togglebar,      {0} },
 	{ MODKEY|ShiftMask,        XK_c,             killclient,     {0} },
-	{ MODKEY,                  XK_d,             spawn,          {.v = dmenucmd } },
+	{ MODKEY,                  XK_d,             spawn,          {.v = launchercmd } },
 	{ MODKEY,                  XK_e,             spawn,          {.v = emacscmd } },
 	{ MODKEY,                  XK_Return,        spawn,          {.v = termcmd } },
 	/* layouts */

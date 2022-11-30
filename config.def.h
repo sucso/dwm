@@ -64,16 +64,13 @@ static const Layout layouts[] = {
 #define TERMINAL_ENVVAR "TERMINAL"
 static const char *emacscmd[] = { "emacsclient", "-c", "-a", "", NULL };
 
-// NOTE: this expects a LAUNCHER script to exist
-static const char *launchercmd[] = { "LAUNCHER", NULL };
-
 #include "movestack.c"
 static const Key keys[] = {
 	/* modifier                key               function        argument */
 	/* spawn programs */
 	{ MODKEY,                  XK_b,             togglebar,      {0} },
 	{ MODKEY|ShiftMask,        XK_c,             killclient,     {0} },
-	{ MODKEY,                  XK_d,             spawn,          {.v = launchercmd } },
+	{ MODKEY,                  XK_d,             spawn,          SHCMD("$LAUNCHER") },
 	{ MODKEY,                  XK_e,             spawn,          {.v = emacscmd } },
 	{ MODKEY,                  XK_Return,        spawn,          {.v = termcmd } },
 	/* layouts */

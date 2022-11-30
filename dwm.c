@@ -1682,10 +1682,14 @@ setup(void)
 	sigchld(0);
 
 	/* load environment variable(s) */
-	termcmd[0] = getenv(TERMINAL_ENVVAR);
-	if (termcmd[0] == NULL) {
-		die("couldn't load " TERMINAL_ENVVAR " environment variable.");
+#define LOAD_ENVVAR(CMD, ENVVAR) \
+	CMD[0] = getenv(ENVVAR); \
+	if (CMD[0] == NULL) { \
+		die("couldn't load " ENVVAR " environment variable."); \
 	}
+
+	LOAD_ENVVAR(termcmd, TERMINAL_ENVVAR)
+
 	/* init screen */
 	screen = DefaultScreen(dpy);
 	sw = DisplayWidth(dpy, screen);
